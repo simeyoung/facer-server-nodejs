@@ -1,0 +1,26 @@
+<html>
+    <body>
+        <img id="video" />
+        <h1 id="title"></h1>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+        <script>
+            console.log(io);
+            const socket = io.connect('http://localhost:3000');
+            socket.on('image', (data) => {
+                const frame = document.getElementById('video');
+                frame.src = 'data:image/jpeg;base64,' + data;
+            });
+
+            socket.on('hello_man', (name) => {
+                const h1 = document.getElementById('title');
+
+                if(!name) {
+                    h1.innerHTML = '';
+                    return;
+                }
+
+                h1.innerHTML = 'Ciao ' + name;
+            });
+        </script>
+    </body>
+</html>
