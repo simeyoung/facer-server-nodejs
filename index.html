@@ -5,7 +5,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
         <script>
             console.log(io);
-            const socket = io.connect('http://localhost:3000');
+            const socket = io.connect('http://10.50.120.118:3000');
             socket.on('image', (data) => {
                 const frame = document.getElementById('video');
                 frame.src = 'data:image/jpeg;base64,' + data;

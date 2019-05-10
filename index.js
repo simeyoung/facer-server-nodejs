@@ -42,7 +42,14 @@ function onReadFile(img, path, arr) {
  * @param {{ grey: any; name: any; }[]} arr
  */
 function onImage(imgGrey, path, arr) {
-	const paths = path.split('/');
+	let paths = [];
+
+	if (process.platform === "win32" || process.platform === "win64") {
+		paths = path.split('\\');
+	} else {
+		paths = path.split('/');
+	}
+
 	const folderPerson = paths[paths.length - 2];
 	arr.push({ grey: imgGrey, name: folderPerson });
 	console.log(folderPerson, 'processed');
@@ -147,9 +154,11 @@ async function initServerAsync() {
 
 	app.listen(PORT + 1);
 	io.attach(PORT);
-	io.on('connection', socket => {
-		socket.on('imageToAnalyze', data => onFrameAsync(data));
-	});
+	console.log(`[SERVER] websocket listening ${PORT}`);
+	console.log(`[SERVER] site listening ${PORT + 1}`);
+	io.on('connection', socket =>
+		socket.on('imageToAnalyze', data => onFrameAsync(data))
+	);
 	// TODO: Non funziona! capire il perchè
 	// io.on('ping', () => console.log('ping'));
 	// io.on('reconnecting', () => console.log('reconnecting'));
